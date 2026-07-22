@@ -1,0 +1,108 @@
+#include<iostream>
+#include<stack>
+
+using namespace std;
+#define MAX 5
+
+class libraryStack{
+    private:
+    string books[MAX];
+    int top=-1;
+
+    public:
+
+    void push(string book){
+        if(top==MAX-1){
+            printf("Stack is Overflow\n");
+            return;
+        }
+        top=top+1;
+        books[top]=book;
+        printf("%s return successfully\n",book);
+    }
+
+    void pop(){
+        if (top==-1)
+        {
+            printf("Stack is under flow\n");
+            return;
+        }
+        printf("%s is arranged in the self\n",books[top]);
+        top=top-1;
+        
+    }
+
+    void peek(){
+        if(top==-1){
+            printf("Stack is underflow\n");
+            return;
+        }
+        printf("Top book :%s",books[top]);
+
+    }
+
+    void display(){
+        if (top==-1)
+        {
+            printf("stack is under flow\n");
+            return;
+        }
+        printf("Books in Stack\n");
+        for(int i=top;i>=0;i--){
+
+            printf("%s",books[i]);
+        }
+        
+    }
+};
+
+int main(){
+    libraryStack s;
+    int choice;
+    string book;
+
+    do
+    {
+        printf("\n***Library Stack Menu***\n");
+        printf("1.Return Book\n");
+        printf("2.Arrange book\n");
+        printf("3.top book\n");
+        printf("4.Display Stack\n");
+        printf("5.Exit\n");
+
+        printf("Enter your choise:\n");
+        scanf("%d",&choice);
+        switch (choice)
+        {
+        case 1:
+            printf("Enter Book Name:");
+            scanf("%s",&book);
+            s.push(book);
+            break;
+
+        case 2:
+        s.pop();
+        break;
+
+        case 3:
+        s.peek();
+        break;
+
+        case 4:
+        s.display();
+        break;
+
+        case 5:
+        printf("Exiting Program\n");
+        break;
+        
+        default:
+        printf("Invalid Choice\n");
+            break;
+        }
+    } while (choice !=5);
+
+    return 0;
+
+    
+}
