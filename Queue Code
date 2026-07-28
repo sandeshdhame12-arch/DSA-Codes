@@ -1,0 +1,119 @@
+#include<iostream>
+
+using namespace std;
+
+
+class Queue{
+    private:
+    int data[5];
+    int front=-1;
+    int rear=-1;
+    int size=5;
+
+    public:
+    void enqueue(int value){
+
+        if(rear==size-1){
+            printf("Q is overflow\n ");
+            return;
+        }
+
+        if(front==-1){
+            front=0;
+        }
+
+        rear++;
+        data[rear]= value;
+        printf("%d is stored in Q", value);
+    }
+
+    void dequeue(){
+        if(front==-1&&rear==1){
+            printf("Queue is underflow\n");
+            return;
+        }
+        if(front==rear){
+            front=rear=-1;
+        }
+        data[front];
+        printf("%d is remove from Q",data);
+        front++;
+    }
+
+    void peek(){
+
+        if(front==-1&&rear==-1){
+            printf("queue is empty\n");
+            return;
+        }
+        data[front];
+        printf("%d is peek from Q",data);
+    }
+
+    void display(){
+        if(front==-1&&rear==-1){
+            printf("queue is empty\n");
+            return;
+        }
+        for(int i=front;i<=rear;i++){
+            printf("%d",data[i]);
+        }
+    }
+};
+
+int main(){
+Queue q;
+
+int choise, value;
+
+do
+{
+    printf("***Queue menu***\n");
+
+    printf("1. enqquq\n");
+    printf("2.dequeue\n");
+    printf("3.peek\n");
+    printf("4.display\n");
+    printf("5.exit\n");
+
+    //printf("Enter the choise:");
+    //scanf("%d",&choise);
+    cout<<"Enter coice";
+    cin>>choise;
+
+    switch (choise)
+    {
+
+        case 1:
+        printf("Enter value:");
+        scanf("%d",&value);
+            q.enqueue(value);
+            break;
+
+        case 2:
+            q.dequeue();
+            break;
+
+        case 3:
+            q.peek();
+            break;
+
+        case 4:
+            q.display();
+        break;
+
+        case 5:
+            printf("Exit from the porgram\n");
+            break;
+        default:
+        printf("invalid choise");
+            break;
+    }
+    
+
+
+} while (choise!=5);
+
+return 0;
+
+}
