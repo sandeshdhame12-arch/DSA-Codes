@@ -1,0 +1,175 @@
+#include <iostream>
+#include <queue>
+#include <algorithm>
+
+using namespace std;
+
+// Node structure for the Binary Search Tree
+struct Node {
+    int data;
+    Node* left;
+    Node* right;
+
+    Node(int val) {
+        data = val;
+        left = nullptr;
+        right = nullptr;
+    }
+};
+
+// Function to insert an Employee ID into the BST
+Node* insert(Node* root, int value) {
+    if (root == nullptr) {
+        return new Node(value);
+    }
+    if (value < root->data) {
+        root->left = insert(root->left, value);
+    } else if (value > root->data) {
+        root->right = insert(root->right, value);
+    } else {
+        cout << "Duplicate Employee ID (" << value << ") not allowed.\n";
+    }
+    return root;
+}
+
+// Function to perform Level Order Traversal using a queue
+void levelOrder(Node* root) {
+    if (root == nullptr) {
+        cout << "Tree is Empty.\n";
+        return;
+    }
+
+    queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty()) {
+        Node* current = q.front();
+        q.pop();
+
+        cout << current->data << " ";
+
+        if (current->left != nullptr) {
+            q.push(current->left);
+        }
+        if (current->right != nullptr) {
+            q.push(current->right);
+        }
+    }
+    cout << "\n";
+}
+
+// Function to recursively copy a BST
+Node* copyTree(Node* root) {
+    if (root == nullptr) {
+        return nullptr;
+    }
+
+    Node* newNode = new Node(root->data);
+    newNode->left = copyTree(root->left);
+    newNode->right = copyTree(root->right);
+
+    return newNode;
+}
+
+// Function to calculate the height of the BST
+int findHeight(Node* root) {
+    if (root == nullptr) {
+        return -1; // Height of an empty tree is -1 (or 0 if counted in nodes)
+    }
+
+    int leftHeight = findHeight(root->left);
+    int rightHeight = findHeight(root->right);
+
+    return max(leftHeight, rightHeight) + 1;
+}
+
+// Function to display all leaf nodes (employees with no subordinates)
+void printLeafNodes(Node* root) {
+    if (root == nullptr) {
+        return;
+    }
+
+    if (root->left == nullptr && root->right == nullptr) {
+        cout << root->data << " ";
+        return;
+    }
+
+    printLeafNodes(root->left);
+    printLeafNodes(root->right);
+}
+
+int main() {
+    Node* root = nullptr;
+    Node* copyRoot = nullptr;
+    int choice, val, n;
+
+    do {
+        cout << "\n==========================================";
+        cout << "\n Employee Database Analysis using BST";
+        cout << "\n==========================================";
+        cout << "\n1. Insert Employee IDs";
+        cout << "\n2. Display Original BST (Level Order)";
+        cout << "\n3. Copy BST";
+        cout << "\n4. Display Copied BST (Level Order)";
+        cout << "\n5. Find Height of BST";
+        cout << "\n6. Display Leaf Nodes";
+        cout << "\n7. Exit";
+        cout << "\nEnter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                cout << "Enter number of employee IDs to insert: ";
+                cin >> n;
+                for (int i = 0; i < n; i++) {
+                    cout << "Enter Employee ID " << (i + 1) << ": ";
+                    cin >> val;
+                    root = insert(root, val);
+                }
+                break;
+
+            case 2:
+                cout << "\nOriginal BST (Level Order): ";
+                levelOrder(root);
+                break;
+
+            case 3:
+                copyRoot = copyTree(root);
+                cout << "\nBST Copied Successfully!\n";
+                break;
+
+            case 4:
+                cout << "\nCopied BST (Level Order): ";
+                levelOrder(copyRoot);
+                break;
+
+            case 5:
+                if (root == nullptr) {
+                    cout << "\nTree is empty. Height is -1.\n";
+                } else {
+                    cout << "\nHeight of BST: " << findHeight(root) << "\n";
+                }
+                break;
+
+            case 6:
+                if (root == nullptr) {
+                    cout << "\nTree is empty.\n";
+                } else {
+                    cout << "\nLeaf Nodes (Employees with no subordinates): ";
+                    printLeafNodes(root);
+                    cout << "\n";
+                }
+                break;
+
+            case 7:
+                cout << "\nExiting Program...\n";
+                break;
+
+            default:
+                cout << "\nInvalid Choice! Please enter a number between 1 and 7.\n";
+        }
+    } while (choice != 7);
+
+    return 0;
+}
+
