@@ -1,38 +1,96 @@
 #include <iostream>
 #include <queue>
-#include <algorithm>
+
 
 using namespace std;
 
-// Node structure for the Binary Search Tree
-struct Node {
+struct Node
+{
     int data;
-    Node* left;
-    Node* right;
+    Node *left;
+    Node *right;
 
-    Node(int val) {
-        data = val;
-        left = nullptr;
-        right = nullptr;
+    Node(int value)
+    {
+        data = value;
+        left = NULL;
+        right = NULL;
     }
 };
 
-// Function to insert an Employee ID into the BST
-Node* insert(Node* root, int value) {
-    if (root == nullptr) {
-        return new Node(value);
-    }
-    if (value < root->data) {
-        root->left = insert(root->left, value);
-    } else if (value > root->data) {
-        root->right = insert(root->right, value);
-    } else {
-        cout << "Duplicate Employee ID (" << value << ") not allowed.\n";
-    }
-    return root;
+// Create binary tree recursively
+Node* createTree()
+{
+    int value;
+
+    cout << "Enter value (-1 for NULL): ";
+    cin >> value;
+
+    if (value == -1)
+        return NULL;
+
+    Node *temp = new Node(value);
+
+    cout << "Enter left child of " << value << ":\n";
+    temp->left = createTree();
+
+    cout << "Enter right child of " << value << ":\n";
+    temp->right = createTree();
+
+    return temp;
 }
 
-// Function to perform Level Order Traversal using a queue
+// Insert node in a binary tree using level order
+void insert(Node *&root, int value)
+{
+    if (value == -1)
+    {
+        cout << "Cannot insert -1 as a node value.\n";
+        return;
+    }
+
+    Node *newNode = new Node(value);
+
+    // If tree is empty
+    if (root == NULL)
+    {
+        root = newNode;
+        return;
+    }
+
+    queue<Node*> q;
+    q.push(root);
+
+    while (!q.empty())
+    {
+        Node *temp = q.front();
+        q.pop();
+
+        // Insert at first empty left position
+        if (temp->left == NULL)
+        {
+            temp->left = newNode;
+            return;
+        }
+        else
+        {
+            q.push(temp->left);
+        }
+
+        // Insert at first empty right position
+        if (temp->right == NULL)
+        {
+            temp->right = newNode;
+            return;
+        }
+        else
+        {
+            q.push(temp->right);
+        }
+    }
+}
+
+// Level order traversal display
 void levelOrder(Node* root) {
     if (root == nullptr) {
         cout << "Tree is Empty.\n";
@@ -58,7 +116,7 @@ void levelOrder(Node* root) {
     cout << "\n";
 }
 
-// Function to recursively copy a BST
+// Copy tree function
 Node* copyTree(Node* root) {
     if (root == nullptr) {
         return nullptr;
@@ -71,10 +129,10 @@ Node* copyTree(Node* root) {
     return newNode;
 }
 
-// Function to calculate the height of the BST
+// Function to calculate the height of the tree
 int findHeight(Node* root) {
     if (root == nullptr) {
-        return -1; // Height of an empty tree is -1 (or 0 if counted in nodes)
+        return -1; // Height of an empty tree is -1
     }
 
     int leftHeight = findHeight(root->left);
@@ -105,13 +163,13 @@ int main() {
 
     do {
         cout << "\n==========================================";
-        cout << "\n Employee Database Analysis using BST";
+        cout << "\n Employee Database Analysis using Binary Tree";
         cout << "\n==========================================";
         cout << "\n1. Insert Employee IDs";
-        cout << "\n2. Display Original BST (Level Order)";
-        cout << "\n3. Copy BST";
-        cout << "\n4. Display Copied BST (Level Order)";
-        cout << "\n5. Find Height of BST";
+        cout << "\n2. Display Original Tree (Level Order)";
+        cout << "\n3. Copy Tree";
+        cout << "\n4. Display Copied Tree (Level Order)";
+        cout << "\n5. Find Height of Tree";
         cout << "\n6. Display Leaf Nodes";
         cout << "\n7. Exit";
         cout << "\nEnter your choice: ";
@@ -124,22 +182,22 @@ int main() {
                 for (int i = 0; i < n; i++) {
                     cout << "Enter Employee ID " << (i + 1) << ": ";
                     cin >> val;
-                    root = insert(root, val);
+                    insert(root, val); // Fixed: Removed assignment since insert returns void
                 }
                 break;
 
             case 2:
-                cout << "\nOriginal BST (Level Order): ";
+                cout << "\nOriginal Tree (Level Order): ";
                 levelOrder(root);
                 break;
 
             case 3:
                 copyRoot = copyTree(root);
-                cout << "\nBST Copied Successfully!\n";
+                cout << "\nTree Copied Successfully!\n";
                 break;
 
             case 4:
-                cout << "\nCopied BST (Level Order): ";
+                cout << "\nCopied Tree (Level Order): ";
                 levelOrder(copyRoot);
                 break;
 
@@ -147,7 +205,7 @@ int main() {
                 if (root == nullptr) {
                     cout << "\nTree is empty. Height is -1.\n";
                 } else {
-                    cout << "\nHeight of BST: " << findHeight(root) << "\n";
+                    cout << "\nHeight of Tree: " << findHeight(root) << "\n";
                 }
                 break;
 
